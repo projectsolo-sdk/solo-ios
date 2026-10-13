@@ -12,7 +12,7 @@ repository's URL, or add it to your `Package.swift`:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/projectsolo-sdk/solo-ios.git", from: "1.0.0-alpha.2"),
+    .package(url: "https://github.com/projectsolo-sdk/solo-ios.git", from: "1.0.0-alpha.3"),
 ],
 targets: [
     .target(name: "YourApp", dependencies: [
@@ -23,7 +23,7 @@ targets: [
 
 then `import SOLO`.
 
-`1.0.0-alpha.2` is a preview release. SwiftPM resolves a pre-release only when the
+`1.0.0-alpha.3` is a preview release. SwiftPM resolves a pre-release only when the
 requirement itself names one, as above: `from: "1.0.0"` matches nothing until 1.0.0
 is released.
 
