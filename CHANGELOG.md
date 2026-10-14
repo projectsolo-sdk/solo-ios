@@ -2,6 +2,18 @@
 
 Each release of the SOLO iOS package is listed here, newest first.
 
+## 1.0.0-alpha.4 (preview)
+
+Fixes sandbox device-attestation recovery after an earlier verification ran
+before the app was registered.
+
+- Sandbox configurations now keep separate device-attestation keys.
+- When a sandbox key is no longer registered, the SDK can obtain a fresh key
+  on the next verification without reinstalling the app.
+- Update the SDK in place and start a new verification after registering the
+  app in the sandbox Apps settings. The current sandbox result remains unchanged.
+- No public API changes; signature and replay validation remain required.
+
 ## 1.0.0-alpha.3 (preview)
 
 The package now includes the SOLO SDK License and the third-party notices.
