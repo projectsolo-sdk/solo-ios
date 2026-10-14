@@ -2,6 +2,14 @@
 
 Each release of the SOLO iOS package is listed here, newest first.
 
+## 1.0.0-alpha.5 (preview)
+
+Reduces implementation symbols and compiler metadata exposed by the iOS package.
+
+- The documented public API and stable Swift module interfaces are preserved.
+- Model resources and capture logic are unchanged.
+- Private crash symbols are retained separately from the distributed package.
+
 ## 1.0.0-alpha.4 (preview)
 
 Fixes sandbox device-attestation recovery after an earlier verification ran
