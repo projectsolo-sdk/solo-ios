@@ -2,6 +2,18 @@
 
 Each release of the SOLO iOS package is listed here, newest first.
 
+## 1.0.0-alpha.6 (preview)
+
+Reduces directly readable internal metadata and resource identifiers in the
+distributed iOS package.
+
+- Preserves the existing public APIs and capture behavior.
+- Preserves decoded model content and offline preparation of bundled resources.
+- Removes diagnostic rendering that the distributed package cannot enable.
+
+These measures reduce disclosure; they do not prevent binary analysis or resource
+recovery.
+
 ## 1.0.0-alpha.5 (preview)
 
 Reduces implementation symbols and compiler metadata exposed by the iOS package.
