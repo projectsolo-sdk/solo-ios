@@ -12,7 +12,7 @@ repository's URL, or add it to your `Package.swift`:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/projectsolo-sdk/solo-ios.git", from: "1.0.0-alpha.7"),
+    .package(url: "https://github.com/projectsolo-sdk/solo-ios.git", from: "1.0.0-alpha.10"),
 ],
 targets: [
     .target(name: "YourApp", dependencies: [
@@ -23,7 +23,7 @@ targets: [
 
 then `import SOLO`.
 
-`1.0.0-alpha.7` is a preview release. SwiftPM resolves a pre-release only when the
+`1.0.0-alpha.10` is a preview release. SwiftPM resolves a pre-release only when the
 requirement itself names one, as above: `from: "1.0.0"` matches nothing until 1.0.0
 is released.
 
@@ -82,3 +82,31 @@ these documents, write to [contact@projectsolo.ai](mailto:contact@projectsolo.ai
 The SDK is proprietary, commercial software of Solo Research Limited, not open source; no
 source code is provided. It may be used only by a partner who has accepted the Solo Terms
 and holds credentials issued by Solo.
+
+## Device-attestation diagnostics
+
+From `1.0.0-alpha.10`, the SDK emits unified logs in Debug and Release builds with
+subsystem `ai.projectsolo.sdk`, category `app-attest`, and message prefix
+`SOLO_APP_ATTEST`. Failures use the error level; other stage results use notice.
+No configuration or private SDK API is required.
+
+Filter Console for that subsystem/category, or an existing device log stream for
+`SOLO_APP_ATTEST`. Share only those message lines when investigating a failure.
+They contain fixed `stage`, `outcome`, `family`, and `operation` values, an optional
+numeric `code`, and `elapsed_ms`. A `device_check` code is Apple's `DCError.Code`;
+a `keychain` code is a Security `OSStatus`. `not_found` (`-25300`) is normal when
+no key has been saved. `skipped` means a key changed before a marker write or
+matching-key reset. No key, challenge, assertion, session, account, biometric
+data, or arbitrary Apple error message is logged.
+
+A failure identifies the local operation; it does not change the server's
+verification result. Existing key recovery takes effect on a subsequent
+verification. Simulator support failures cannot establish whether App Attest
+works on a physical device.
+
+## After a failed capture
+
+A failed capture shows **DONE** and returns its failure to your app. The SDK does
+not restart the capture in the same verification session. When the result's
+recovery is `newSession`, create a new session on your server and call
+`Solo.verify` with its fresh claim token. Server rejections are also terminal.

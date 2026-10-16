@@ -12,8 +12,8 @@ let package = Package(
     targets: [
         .binaryTarget(
             name: "SOLO",
-            url: "https://storage.googleapis.com/solo-poh-sdk-releases/ios/1.0.0-alpha.7/SOLO.xcframework.zip",
-            checksum: "aadef37c938ab8f59d92d7dde6d3fe1a9f34a33053476ddc0ad22a70dfe3156e"
+            url: "https://storage.googleapis.com/solo-poh-sdk-releases/ios/1.0.0-alpha.10/SOLO.xcframework.zip",
+            checksum: "f0e75454eb3f090aef33d30e8e72aaffb37a3efbf6eeee75074b86bfc3735713"
         ),
     ]
 )

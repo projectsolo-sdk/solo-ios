@@ -2,6 +2,17 @@
 
 Each release of the SOLO iOS package is listed here, newest first.
 
+## 1.0.0-alpha.10 (preview)
+
+Makes capture failures terminal and adds device-attestation diagnostics on iOS.
+
+- Debug and Release builds log fixed operation stages and numeric Apple error
+  codes without keys, assertions, account identifiers or capture data.
+- A failed capture shows **DONE**, returns the failure to the host, and requires
+  a new session. The SDK no longer offers **TRY AGAIN** within the same session.
+- Submitted data, server verdicts, automatic network backoff and key recovery
+  behavior are unchanged.
+
 ## 1.0.0-alpha.7 (preview)
 
 Simplifies Solo's consent screen.
