@@ -2,6 +2,22 @@
 
 Each release of the SOLO iOS package is listed here, newest first.
 
+## 1.0.0-alpha.7 (preview)
+
+Simplifies Solo's consent screen.
+
+- **Breaking:** `SoloConfiguration.privacyMessage` is removed, together with the
+  `privacyMessage:` parameter of `SoloConfiguration.init`. Partners no longer add
+  their own text to the consent screen; remove the argument where you pass it.
+- The consent screen is shorter: Solo's logo without a close button (Decline
+  leaves, as before), what your app receives, Solo's consent text and a
+  one-line privacy note.
+- Links in Solo's consent text open in an in-app Safari view instead of
+  leaving your app.
+- Solo's consent text is built into the SDK (version `2026-10-16-v1`): the
+  screen shows the same text in every session, with links to Solo's Terms and
+  Privacy Policy.
+
 ## 1.0.0-alpha.6 (preview)
 
 Reduces directly readable internal metadata and resource identifiers in the
