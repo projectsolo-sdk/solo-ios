@@ -12,8 +12,8 @@ let package = Package(
     targets: [
         .binaryTarget(
             name: "SOLO",
-            url: "https://cdn.projectsolo.ai/ios/2.1.1/SOLO.xcframework.zip",
-            checksum: "6f3981ad553897bcefadf43356854babff0c68436881b3997915f488c5ad62ee"
+            url: "https://cdn.projectsolo.ai/ios/2.1.2/SOLO.xcframework.zip",
+            checksum: "b144139fc204d45ac3486ca706e9cd7211bd7df0a190665c4d67a76de7268c3a"
         ),
     ]
 )

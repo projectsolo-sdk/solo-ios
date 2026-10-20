@@ -12,7 +12,7 @@ repository's URL, or add it to your `Package.swift`:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/projectsolo-sdk/solo-ios.git", from: "2.1.1"),
+    .package(url: "https://github.com/projectsolo-sdk/solo-ios.git", from: "2.1.2"),
 ],
 targets: [
     .target(name: "YourApp", dependencies: [
@@ -23,7 +23,7 @@ targets: [
 
 then `import SOLO`.
 
-`from: "2.1.1"` accepts 2.1.1 and any later 2.x release, up to but not including
+`from: "2.1.2"` accepts 2.1.2 and any later 2.x release, up to but not including
 3.0.0. If your app's requirement names a 1.x version (or a `1.0.0-alpha` preview),
 replace it with the one above; see [CHANGELOG.md](CHANGELOG.md) for what changed in 2.0.0.
 
@@ -93,7 +93,7 @@ To make the first scan work without downloading, ship the models with your app:
 1. Download `SOLOResources.zip` for **exactly the SDK version you use**:
    `https://cdn.projectsolo.ai/ios/<version>/SOLOResources.zip`
    (for this version,
-   `https://cdn.projectsolo.ai/ios/2.1.1/SOLOResources.zip`).
+   `https://cdn.projectsolo.ai/ios/2.1.2/SOLOResources.zip`).
    Its SHA-256 is published beside it as `SOLOResources.zip.checksum`.
 2. Unzip it. It holds one folder, `SOLOResources`.
 3. Drag the `SOLOResources` folder into your app target in Xcode and choose

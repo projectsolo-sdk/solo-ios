@@ -2,6 +2,21 @@
 
 Each release of the SOLO iOS package is listed here, newest first.
 
+## 2.1.2
+
+`Solo.verify()` reuses a completed preparation; no repeated file checks.
+
+- After `Solo.prewarm()`, `Solo.preloadModels()` or an earlier `Solo.verify()` in the same
+  app session, `verify` (and another `prewarm` or `preload`) checks no model file again and
+  loads or warms nothing again while the files are unchanged; progress goes straight to
+  `.ready`. A `verify` started while a `prewarm` runs waits for it and adds nothing after it.
+- Each model file is checked once and then trusted while it is unchanged (same size,
+  modification time and file identity), also after a relaunch; a changed or replaced file
+  is checked again, and one that no longer matches is downloaded again.
+- `Solo.offloadModels()` (and a memory warning) means the next preparation loads again;
+  `Solo.clearModelCache()` means everything is checked again.
+- Install with `from: "2.1.2"`.
+
 ## 2.1.1
 
 Adds preparation progress, download retries and specific preparation errors. Existing code
