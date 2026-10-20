@@ -2,6 +2,27 @@
 
 Each release of the SOLO iOS package is listed here, newest first.
 
+## 2.1.1
+
+Adds preparation progress, download retries and specific preparation errors. Existing code
+keeps compiling.
+
+- `Solo.preloadModels(progress:)` and `Solo.prewarm(progress:)` take an optional closure
+  that receives `SoloPreparationProgress` (phase, bytes, files and a 0...1 fraction) on the
+  main actor, ending with `.ready`. `Solo.preparationProgress` streams every preparation,
+  including the one `Solo.verify()` runs by itself.
+- Model downloads retry transient failures up to three times with backoff, resume an
+  interrupted file instead of starting over, and download a file that fails its checksum
+  once more.
+- `SoloPreparationError` now says why preparation failed: `.offline`,
+  `.server(status:)`, `.integrity`, `.storageFull`, `.cancelled`, or `.preparationFailed`
+  for any other cause. Before 2.1.1 every failure was `.preparationFailed`: code that
+  matched only that case should now catch `SoloPreparationError`. `rawValue` still exists
+  (`preparation_failed`, `offline`, `server`, `integrity`, `storage_full`, `cancelled`).
+- `Solo.verify()` still returns `MODEL_UNAVAILABLE` when it cannot prepare; `detail` now
+  names the cause (for example `preparation_offline`).
+- Install with `from: "2.1.1"`.
+
 ## 2.0.0
 
 **Breaking release.** The models no longer ship inside the framework, and the

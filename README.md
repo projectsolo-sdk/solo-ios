@@ -12,7 +12,7 @@ repository's URL, or add it to your `Package.swift`:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/projectsolo-sdk/solo-ios.git", from: "2.0.0"),
+    .package(url: "https://github.com/projectsolo-sdk/solo-ios.git", from: "2.1.1"),
 ],
 targets: [
     .target(name: "YourApp", dependencies: [
@@ -23,7 +23,7 @@ targets: [
 
 then `import SOLO`.
 
-`from: "2.0.0"` accepts 2.0.0 and any later 2.x release, up to but not including
+`from: "2.1.1"` accepts 2.1.1 and any later 2.x release, up to but not including
 3.0.0. If your app's requirement names a 1.x version (or a `1.0.0-alpha` preview),
 replace it with the one above; see [CHANGELOG.md](CHANGELOG.md) for what changed in 2.0.0.
 
@@ -48,6 +48,44 @@ it) to download early, and retry it when the device is online if it fails.
 `Solo.clearModelCache()` deletes the downloaded files; the next preparation downloads
 them again.
 
+### Progress and failures
+
+`Solo.preloadModels(progress:)` and `Solo.prewarm(progress:)` take an optional closure
+that receives `SoloPreparationProgress` on the main actor, about ten times a second at
+most, and last with `.ready` before the call returns:
+
+```swift
+try await Solo.prewarm { progress in
+    bar.progress = Float(progress.fractionCompleted)          // 0...1, never decreases
+    label.isHidden = progress.phase != .downloading           // .checking, .downloading,
+}                                                              // .loading, .warming, .ready
+```
+
+`progress.completedBytes` and `progress.totalBytes` (known from the start) cover the model
+files, as do `completedFiles` and `totalFiles`. When the files are already in your app or
+cached, there is no `.downloading` phase. To follow every preparation, including the one
+`Solo.verify()` runs by itself, iterate `Solo.preparationProgress` (an `AsyncStream`; each
+access is a new stream) from the main actor, for example in a SwiftUI `.task`.
+
+Downloads retry transient failures (timeouts, a lost or missing connection, HTTP 5xx and
+429) up to three times with a growing delay, and continue an interrupted file where it
+stopped. A file that does not match its checksum is downloaded once more. If preparation
+still fails, the call throws `SoloPreparationError`:
+
+| Case | Meaning |
+|---|---|
+| `.offline` | No usable connection. Retry when the device is online. |
+| `.server(status:)` | SOLO's file server answered with that HTTP status. |
+| `.integrity` | A file did not match its checksum, also after downloading it again. |
+| `.storageFull` | The device has no space left for the files. |
+| `.cancelled` | The SDK's own transfer was cancelled (for example by the system). |
+| `.preparationFailed` | Any other cause. |
+
+Cancelling the calling task still throws `CancellationError`. `Solo.verify()` still returns
+`.failed` with `SoloErrorCode.modelUnavailable` when it cannot prepare; its `detail` names
+the cause (`preparation_offline`, `preparation_server_<status>`, `preparation_integrity`,
+`preparation_storage_full`, `preparation_cancelled` or `preparation_failed`).
+
 ### Optional: ship the models in your app
 
 To make the first scan work without downloading, ship the models with your app:
@@ -55,7 +93,7 @@ To make the first scan work without downloading, ship the models with your app:
 1. Download `SOLOResources.zip` for **exactly the SDK version you use**:
    `https://cdn.projectsolo.ai/ios/<version>/SOLOResources.zip`
    (for this version,
-   `https://cdn.projectsolo.ai/ios/2.0.0/SOLOResources.zip`).
+   `https://cdn.projectsolo.ai/ios/2.1.1/SOLOResources.zip`).
    Its SHA-256 is published beside it as `SOLOResources.zip.checksum`.
 2. Unzip it. It holds one folder, `SOLOResources`.
 3. Drag the `SOLOResources` folder into your app target in Xcode and choose
