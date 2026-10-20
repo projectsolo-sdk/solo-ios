@@ -1,0 +1,17 @@
+# SOLO SDK License
+
+Copyright (c) 2026 Solo Research Limited. All rights reserved.
+
+SOLO.xcframework ("SDK") is proprietary software of Solo Research Limited. The Solo-owned components are not open source.
+
+Subject to this license, you may use the SDK with credentials issued by Solo, integrate it unmodified into your applications, and distribute the SDK in compiled form solely as part of those applications, including through application stores.
+
+You may not modify, reverse engineer, decompile, sublicense, or redistribute the SDK separately from your applications without Solo's prior written permission, except as permitted by applicable law or third-party licenses.
+
+Use of Solo services is subject to the Solo Terms of Service (https://projectsolo.ai/terms). Processing of personal data is described in the Solo Privacy Policy (https://projectsolo.ai/privacy).
+
+Third-party components are governed by their respective licenses. Required copyright and license notices are provided with the SDK and must be retained and redistributed where required by those licenses. Nothing in this license restricts rights granted under applicable third-party licenses.
+
+THE SDK IS PROVIDED "AS IS", WITHOUT WARRANTIES OF ANY KIND, EXPRESS OR IMPLIED, TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW. TO THE MAXIMUM EXTENT PERMITTED BY LAW, SOLO RESEARCH LIMITED SHALL NOT BE LIABLE FOR INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES ARISING FROM THE USE OF THE SDK.
+
+Questions: contact@projectsolo.ai
