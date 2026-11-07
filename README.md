@@ -12,7 +12,7 @@ repository's URL, or add it to your `Package.swift`:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/projectsolo-sdk/solo-ios.git", from: "2.1.2"),
+    .package(url: "https://github.com/projectsolo-sdk/solo-ios.git", from: "2.2.0"),
 ],
 targets: [
     .target(name: "YourApp", dependencies: [
@@ -23,7 +23,7 @@ targets: [
 
 then `import SOLO`.
 
-`from: "2.1.2"` accepts 2.1.2 and any later 2.x release, up to but not including
+`from: "2.2.0"` accepts 2.2.0 and any later 2.x release, up to but not including
 3.0.0. If your app's requirement names a 1.x version (or a `1.0.0-alpha` preview),
 replace it with the one above; see [CHANGELOG.md](CHANGELOG.md) for what changed in 2.0.0.
 
@@ -93,7 +93,7 @@ To make the first scan work without downloading, ship the models with your app:
 1. Download `SOLOResources.zip` for **exactly the SDK version you use**:
    `https://cdn.projectsolo.ai/ios/<version>/SOLOResources.zip`
    (for this version,
-   `https://cdn.projectsolo.ai/ios/2.1.2/SOLOResources.zip`).
+   `https://cdn.projectsolo.ai/ios/2.2.0/SOLOResources.zip`).
    Its SHA-256 is published beside it as `SOLOResources.zip.checksum`.
 2. Unzip it. It holds one folder, `SOLOResources`.
 3. Drag the `SOLOResources` folder into your app target in Xcode and choose
@@ -165,15 +165,22 @@ Filter Console for that subsystem/category, or an existing device log stream for
 `SOLO_APP_ATTEST`. Share only those message lines when investigating a failure.
 They contain fixed `stage`, `outcome`, `family`, and `operation` values, an optional
 numeric `code`, and `elapsed_ms`. A `device_check` code is Apple's `DCError.Code`;
-a `keychain` code is a Security `OSStatus`. `not_found` (`-25300`) is normal when
-no key has been saved. `skipped` means a key changed before a marker write or
-matching-key reset. No key, challenge, assertion, session, account, biometric
-data, or arbitrary Apple error message is logged.
-
+a `file` code is the numeric error of the SDK's key record under Application
+Support; a `keychain` code is a Security `OSStatus` from deleting a key id an
+earlier SDK kept in the Keychain. `not_found` is normal when no key has been
+saved. `deadline` means DeviceCheck did not answer within the attestation's time
+budget. A `key_replacement` stage's code says why a key was replaced, and an
+`attestation_retry` stage's code numbers the retry. `key_confirmation` follows
+an accepted verification; `fallback_assertion` means App Attest was unreachable
+and the previous key signed instead. `skipped` means a matching-key reset or a
+confirmation found a newer key. No key, challenge, assertion, session,
+account, biometric data, file path, or arbitrary Apple error message is logged.
 A failure identifies the local operation; it does not change the server's
-verification result. Existing key recovery takes effect on a subsequent
-verification. Simulator support failures cannot establish whether App Attest
-works on a physical device.
+verification result. Simulator support failures cannot establish whether App
+Attest works on a physical device.
+
+The SDK keeps one App Attest key per app install; a reinstall, restore or
+device migration starts with a new key.
 
 ## After a failed capture
 
@@ -181,3 +188,8 @@ A failed capture shows **DONE** and returns its failure to your app. The SDK doe
 not restart the capture in the same verification session. When the result's
 recovery is `newSession`, create a new session on your server and call
 `Solo.verify` with its fresh claim token. Server rejections are also terminal.
+`appNotRegistered` means your environment has no iOS app registered.
+When Solo doesn't recognize the device's App Attest key, the SDK attests a new
+key and submits once more by itself. `attestationRetry` means it couldn't attest
+that new key; if Solo refuses the retried attestation, the result is
+`.rejected` with reason `.attestationFailed`.

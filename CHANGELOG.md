@@ -2,6 +2,34 @@
 
 Each release of the SOLO iOS package is listed here, newest first.
 
+## 2.2.0
+
+Fixes capture on iPhones whose front camera is mounted in portrait, and gives two
+failures their own error codes.
+
+- Fixes the front camera image orientation on iPhones whose front camera is mounted
+  in portrait: iPhone 17, iPhone 17 Pro, iPhone 17 Pro Max, iPhone Air and later
+  models with that camera. On these phones capture failed.
+- Fixes a verification that could fail right after your app was reinstalled or restored
+  from a backup, or after an earlier verification was interrupted.
+- The verification screens no longer use a web view.
+- `SoloErrorCode` has five new cases. Three occur only on Android. On iOS:
+  - `appNotRegistered`: your environment has no iOS app registered. 2.1.2 reported
+    this as `sessionAlreadyClaimed`.
+  - `attestationRetry`: where 2.1.2 failed with `captureReplayMismatch` because Solo
+    didn't recognize the device's key, the SDK now creates a new key and submits once
+    more by itself. It returns `attestationRetry` only when it can't create that key;
+    if Solo refuses the retry, the result is `.rejected` with reason
+    `.attestationFailed`.
+
+  A `switch` over `SoloErrorCode` needs a `default` or `@unknown default` to keep
+  compiling: Swift 6 already requires one, and Swift 5 mode warned about it.
+- The models are unchanged, so a `SOLOResources` folder from 2.1.2 keeps working.
+- Known issue: a partner display name in some scripts (for example Arabic, Hebrew, Thai
+  or Devanagari) or with emoji may show missing characters on the verification screens.
+  This will be fixed in a later release.
+- Install with `from: "2.2.0"`.
+
 ## 2.1.2
 
 `Solo.verify()` reuses a completed preparation; no repeated file checks.
